@@ -12,7 +12,9 @@ import (
 
 func main() {
 	configs.InitConfig()
+
 	databases.InitMysqlDatabase()
+
 	e := echo.New()
 	e.Validator = &helper.CustomValidator{Validator: validator.New()}
 

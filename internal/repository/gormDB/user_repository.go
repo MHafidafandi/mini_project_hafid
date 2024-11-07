@@ -57,7 +57,7 @@ func (ur *userRepository) Update(userId string, userUC models.User) error {
 	return nil
 }
 func (ur *userRepository) Delete(userId string) error {
-	err := ur.DB.Delete(&models.User{}, userId).Error
+	err := ur.DB.Where("id = ?", userId).Delete(&models.User{}).Error
 	if err != nil {
 		return constant.ErrStatusInternalError
 	}
