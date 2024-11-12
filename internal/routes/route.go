@@ -45,8 +45,13 @@ func New(db *gorm.DB, e *echo.Echo) {
 		SigningKey: []byte(configs.Cfg.JWTSecret),
 	}
 	userRepo := gormdb.NewUserRepositoryGorm(db)
+	foodRepo := gormdb.NewFoodRepositoryGorm(db)
+
 	userUC := usecase.NewUserUsecase(userRepo)
+	foodUC := usecase.NewFoodUsecase(foodRepo)
+
 	userHandler := handler.NewUserController(userUC)
+	foodHandler := handler.NewFoodController(foodUC)
 
 	v1 := e.Group("/api/v1")
 
@@ -57,5 +62,11 @@ func New(db *gorm.DB, e *echo.Echo) {
 	u.GET("/:id", userHandler.GetUserByIdHandler, mddlwrs.CheckIsValidUser)
 	u.PUT("/:id", userHandler.UpdateUserHandler, mddlwrs.CheckIsValidUser)
 	u.DELETE("/:id", userHandler.DeleteUserHandler, mddlwrs.CheckIsValidUser)
+
+	f := v1.Group("/foods", echojwt.WithConfig(ConfigJwt))
+	f.POST("", foodHandler.CreateFoodHandler)
+	f.GET("", foodHandler.GetAllHandler)
+	f.GET("/:id", foodHandler.GetFoodByIdHandler)
+	f.PUT("/:id", foodHandler.UpdateFoodHandler)
 
 }

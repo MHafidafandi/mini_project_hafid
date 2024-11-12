@@ -10,8 +10,6 @@ type Food struct {
 	Stock       int       `json:"stock"`
 	ExpiryDate  time.Time `json:"expiry_date"`
 	Location    string    `gorm:"type:varchar(255)" json:"location"`
-	UserID      string    `gorm:"type:varchar(50)" json:"user_id"`
-	User        User      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	CreatedAt   time.Time `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt   time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 }

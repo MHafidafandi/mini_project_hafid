@@ -152,7 +152,7 @@ func (uc UserController) UpdateUserHandler(c echo.Context) error {
 
 	if err != nil {
 		if errors.Is(err, constant.ErrRecordNotFound) {
-			return c.JSON(http.StatusConflict, response.BaseResponse[any]{
+			return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
 				Status:  false,
 				Message: "user id not found",
 			})
@@ -177,7 +177,7 @@ func (uc UserController) DeleteUserHandler(c echo.Context) error {
 
 	if err != nil {
 		if errors.Is(err, constant.ErrRecordNotFound) {
-			return c.JSON(http.StatusConflict, response.BaseResponse[any]{
+			return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
 				Status:  false,
 				Message: "user id not found",
 			})
