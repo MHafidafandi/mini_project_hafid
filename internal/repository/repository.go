@@ -11,3 +11,10 @@ type UserRepository interface {
 	Update(userId string, userUC models.User) error
 	Delete(userId string) error
 }
+
+type FoodRepository interface {
+	Create(foodUc models.Food) error
+	FindAll() ([]models.Food, error)
+	FindById(id string) (*models.Food, error)
+	Update(id string, foodUc models.Food) error
+}

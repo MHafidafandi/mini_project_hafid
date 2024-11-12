@@ -13,6 +13,7 @@ type config struct {
 	DBAddress            string `mapstructure:"DBADDRESS"`
 	DBName               string `mapstructure:"DBNAME"`
 	JWTSecret            string `mapstructure:"JWT_SECRET"`
+	GeminiAPIKey         string `mapstructure:"GEMINI_API_KEY"`
 	MidtransServerKeyDev string `mapstructure:"MIDTRANS_SERVER_KEY_DEV"`
 	AuthString           string `mapstructure:"AUTH_STRING"`
 }
