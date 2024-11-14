@@ -19,6 +19,8 @@ import (
 
 func New(db *gorm.DB, e *echo.Echo) {
 
+	v1 := e.Group("/api/v1")
+
 	var ConfigJwt = echojwt.Config{
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(helper.JwtCustomClaims)
@@ -46,14 +48,21 @@ func New(db *gorm.DB, e *echo.Echo) {
 	}
 	userRepo := gormdb.NewUserRepositoryGorm(db)
 	foodRepo := gormdb.NewFoodRepositoryGorm(db)
+	orderRepo := gormdb.NewOrderRepository(db)
+	orderItemRepo := gormdb.NewOrderItemRepository(db)
+	paymentRepo := gormdb.NewPaymentRepository(db)
 
-	userUC := usecase.NewUserUsecase(userRepo)
-	foodUC := usecase.NewFoodUsecase(foodRepo)
+	userUC := usecase.NewUserUsecase(&userRepo)
+	foodUC := usecase.NewFoodUsecase(&foodRepo)
+	orderUC := usecase.NewOrderUsecase(&orderRepo, &orderItemRepo, &userRepo, &foodRepo, &paymentRepo)
+	paymentGatwayUC := usecase.NewPaymentGatewayUsecase(&orderRepo, &paymentRepo)
 
-	userHandler := handler.NewUserController(userUC)
-	foodHandler := handler.NewFoodController(foodUC)
+	userHandler := handler.NewUserController(&userUC)
+	foodHandler := handler.NewFoodController(&foodUC)
+	orderHandler := handler.NewOrderController(orderUC)
+	paymentGatwayHandler := handler.NewMidtransNotificationController(paymentGatwayUC)
 
-	v1 := e.Group("/api/v1")
+	v1.POST("/webhook/midtrans", paymentGatwayHandler.HandlerNotification)
 
 	v1.POST("/register", userHandler.HandlerRegister)
 	v1.POST("/login", userHandler.HandlerLogin)
@@ -69,4 +78,8 @@ func New(db *gorm.DB, e *echo.Echo) {
 	f.GET("/:id", foodHandler.GetFoodByIdHandler)
 	f.PUT("/:id", foodHandler.UpdateFoodHandler)
 
+	o := v1.Group("/orders", echojwt.WithConfig(ConfigJwt))
+	o.POST("", orderHandler.CreateNewOrderHandler)
+	o.GET("/:id", orderHandler.GetOrderById)
+	o.GET("/users/:user_id", orderHandler.GetAllUserOrder)
 }

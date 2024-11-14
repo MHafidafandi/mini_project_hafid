@@ -9,7 +9,6 @@ Membuat platform yang memudahkan penjual untuk menawarkan makanan sisa berkualit
 
 - **Autentikasi dan Registrasi Pengguna**: Pembeli dan penjual dapat membuat akun dan login.
 - **Manajemen Produk**: Penjual dapat menambah, memperbarui, dan menghapus produk makanan sisa.
-- **Keranjang Belanja**: Pembeli dapat menambahkan produk ke keranjang dan melakukan checkout.
 - **Transaksi**: Pembeli dapat melakukan pembayaran online melalui sistem checkout.
 - **Riwayat Pembelian**: Pembeli dan penjual dapat melihat riwayat transaksi masing-masing.
 

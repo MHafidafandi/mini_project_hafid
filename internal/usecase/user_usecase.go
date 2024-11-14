@@ -26,7 +26,7 @@ type userUsecase struct {
 func NewUserUsecase(
 	userRepo repository.UserRepository,
 
-) UserUsecase {
+) userUsecase {
 	return userUsecase{
 		userRepository: userRepo,
 	}

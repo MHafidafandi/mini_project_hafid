@@ -23,8 +23,8 @@ type foodUsecase struct {
 }
 
 // NewFoodUsecase adalah constructor untuk FoodUsecase
-func NewFoodUsecase(foodRepo repository.FoodRepository) FoodUsecase {
-	return &foodUsecase{
+func NewFoodUsecase(foodRepo repository.FoodRepository) foodUsecase {
+	return foodUsecase{
 		foodRepo: foodRepo,
 	}
 }
