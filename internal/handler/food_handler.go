@@ -125,3 +125,28 @@ func (fc *FoodController) UpdateFoodHandler(c echo.Context) error {
 		Message: "Update Food successfully",
 	})
 }
+
+func (fc FoodController) DeleteFoodHandler(c echo.Context) error {
+	foodId := c.Param("id")
+
+	err := fc.foodUseCase.DeleteFood(foodId)
+
+	if err != nil {
+		if errors.Is(err, constant.ErrRecordNotFound) {
+			return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+				Status:  false,
+				Message: "food id not found",
+			})
+		}
+
+		return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+			Status:  false,
+			Message: "internal server error",
+		})
+	}
+
+	return c.JSON(http.StatusOK, response.BaseResponse[any]{
+		Status:  true,
+		Message: "delete food successfully",
+	})
+}

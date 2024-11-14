@@ -16,6 +16,7 @@ type FoodUsecase interface {
 	FindAllFood() ([]models.Food, error)
 	FindFoodById(id string) (*models.Food, error)
 	UpdateFood(id string, foodDto request.FoodUpdate) error
+	DeleteFood(id string) error
 }
 
 type foodUsecase struct {
@@ -95,4 +96,22 @@ func (u *foodUsecase) UpdateFood(id string, foodDto request.FoodUpdate) error {
 	}
 
 	return u.foodRepo.Update(id, foodUc)
+}
+
+func (u *foodUsecase) DeleteFood(id string) error {
+	var err error
+
+	_, err = u.FindFoodById(id)
+
+	if err != nil {
+		return err
+	}
+
+	err = u.foodRepo.Delete(id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

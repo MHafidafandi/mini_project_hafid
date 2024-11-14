@@ -62,10 +62,6 @@ Membuat platform yang memudahkan penjual untuk menawarkan makanan sisa berkualit
 - **Users - Orders**: Satu pengguna (pembeli) dapat memiliki banyak transaksi.
 - **Orders - Order Items**: Satu transaksi dapat memiliki banyak item produk.
 
-### Manfaat Tabel _Stores_
-
-Dengan adanya tabel _stores_, data toko lebih terorganisir, memungkinkan pembeli untuk melihat informasi lengkap tentang toko penjual, termasuk produk yang mereka tawarkan.
-
 ---
 
 ## 3. Penerapan AI

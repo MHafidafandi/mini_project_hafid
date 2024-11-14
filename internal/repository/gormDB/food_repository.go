@@ -52,6 +52,14 @@ func (fr *foodRepository) Update(id string, foodUc models.Food) error {
 	}
 	return nil
 }
+func (fr *foodRepository) Delete(id string) error {
+	err := fr.DB.Where("id = ?", id).Delete(&models.Food{}).Error
+
+	if err != nil {
+		return constant.ErrStatusInternalError
+	}
+	return nil
+}
 
 func NewFoodRepositoryGorm(db *gorm.DB) foodRepository {
 	return foodRepository{DB: db}
