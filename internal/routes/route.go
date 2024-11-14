@@ -73,13 +73,14 @@ func New(db *gorm.DB, e *echo.Echo) {
 	u.DELETE("/:id", userHandler.DeleteUserHandler, mddlwrs.CheckIsValidUser)
 
 	f := v1.Group("/foods", echojwt.WithConfig(ConfigJwt))
-	f.POST("", foodHandler.CreateFoodHandler)
+	f.POST("", foodHandler.CreateFoodHandler, mddlwrs.CheckIsValidSeller)
 	f.GET("", foodHandler.GetAllHandler)
 	f.GET("/:id", foodHandler.GetFoodByIdHandler)
-	f.PUT("/:id", foodHandler.UpdateFoodHandler)
+	f.PUT("/:id", foodHandler.UpdateFoodHandler, mddlwrs.CheckIsValidSeller)
+	f.DELETE("/:id", foodHandler.DeleteFoodHandler, mddlwrs.CheckIsValidSeller)
 
 	o := v1.Group("/orders", echojwt.WithConfig(ConfigJwt))
-	o.POST("", orderHandler.CreateNewOrderHandler)
+	o.POST("", orderHandler.CreateNewOrderHandler, mddlwrs.CheckIsValidBuyer)
 	o.GET("/:id", orderHandler.GetOrderById)
 	o.GET("/users/:user_id", orderHandler.GetAllUserOrder)
 }

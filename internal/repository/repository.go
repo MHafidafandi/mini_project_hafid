@@ -17,6 +17,7 @@ type FoodRepository interface {
 	FindAll() ([]models.Food, error)
 	FindById(id string) (*models.Food, error)
 	Update(id string, foodUc models.Food) error
+	Delete(id string) error
 }
 
 type OrderRepository interface {
