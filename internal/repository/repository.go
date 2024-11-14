@@ -18,3 +18,20 @@ type FoodRepository interface {
 	FindById(id string) (*models.Food, error)
 	Update(id string, foodUc models.Food) error
 }
+
+type OrderRepository interface {
+	Create(orderUC models.Order) error
+	FindAll(userId string) (*[]models.Order, error)
+	FindById(orderId string) (*models.Order, error)
+}
+
+type OrderItemRepository interface {
+	Create(orderDetailUC []models.OrderItem) error
+	FindByIdOrder(orderId string) (*[]models.OrderItem, error)
+}
+
+type PaymentRepository interface {
+	Create(paymentUC models.Payment) error
+	FindById(paymentId string) (*models.Payment, error)
+	Update(paymentId string, paymentUC models.Payment) error
+}

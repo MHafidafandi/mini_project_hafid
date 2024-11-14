@@ -4,7 +4,6 @@ import (
 	"errors"
 	"miniproject/constant"
 	"miniproject/internal/models"
-	"miniproject/internal/repository"
 
 	"gorm.io/gorm"
 )
@@ -64,6 +63,6 @@ func (ur *userRepository) Delete(userId string) error {
 	return nil
 }
 
-func NewUserRepositoryGorm(db *gorm.DB) repository.UserRepository {
-	return &userRepository{DB: db}
+func NewUserRepositoryGorm(db *gorm.DB) userRepository {
+	return userRepository{DB: db}
 }

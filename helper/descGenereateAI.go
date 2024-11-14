@@ -26,7 +26,7 @@ func GenerateDescription(foodName string) (string, error) {
 	model.SetTemperature(0.5)
 	model.SetTopK(40)
 	model.SetTopP(0.95)
-	model.SetMaxOutputTokens(8192)
+	model.SetMaxOutputTokens(100)
 	model.ResponseMIMEType = "text/plain"
 
 	resp, err := model.GenerateContent(ctx, genai.Text(prompt))

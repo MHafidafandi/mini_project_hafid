@@ -4,7 +4,6 @@ import (
 	"errors"
 	"miniproject/constant"
 	"miniproject/internal/models"
-	"miniproject/internal/repository"
 	"time"
 
 	"gorm.io/gorm"
@@ -14,14 +13,14 @@ type foodRepository struct {
 	DB *gorm.DB
 }
 
-func (fr foodRepository) Create(foodUc models.Food) error {
+func (fr *foodRepository) Create(foodUc models.Food) error {
 	if err := fr.DB.Model(&models.Food{}).Create(foodUc).Error; err != nil {
 		return constant.ErrStatusInternalError
 	}
 
 	return nil
 }
-func (fr foodRepository) FindAll() ([]models.Food, error) {
+func (fr *foodRepository) FindAll() ([]models.Food, error) {
 	foods := []models.Food{}
 
 	if err := fr.DB.Model(&models.Food{}).
@@ -32,7 +31,7 @@ func (fr foodRepository) FindAll() ([]models.Food, error) {
 	return foods, nil
 }
 
-func (fr foodRepository) FindById(id string) (*models.Food, error) {
+func (fr *foodRepository) FindById(id string) (*models.Food, error) {
 	food := &models.Food{}
 
 	err := fr.DB.Model(&models.Food{}).Where("id = ?", id).Take(food).Error
@@ -45,7 +44,7 @@ func (fr foodRepository) FindById(id string) (*models.Food, error) {
 
 	return food, nil
 }
-func (fr foodRepository) Update(id string, foodUc models.Food) error {
+func (fr *foodRepository) Update(id string, foodUc models.Food) error {
 	err := fr.DB.Model(&models.Food{}).Where("id = ?", id).Updates(&foodUc).Error
 
 	if err != nil {
@@ -54,6 +53,6 @@ func (fr foodRepository) Update(id string, foodUc models.Food) error {
 	return nil
 }
 
-func NewFoodRepositoryGorm(db *gorm.DB) repository.FoodRepository {
-	return &foodRepository{DB: db}
+func NewFoodRepositoryGorm(db *gorm.DB) foodRepository {
+	return foodRepository{DB: db}
 }
