@@ -15,3 +15,8 @@ type UserUpdate struct {
 	Phone   string `json:"phone" form:"phone" validate:"required"`
 	Address string `json:"address" form:"address" validate:"required"`
 }
+
+type LoginRequest struct {
+	Email    string `json:"email" form:"email" validate:"required,email"`
+	Password string `json:"password" form:"password" validate:"required"`
+}

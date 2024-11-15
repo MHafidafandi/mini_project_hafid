@@ -1,82 +1,70 @@
-# Rangkuman Aplikasi Penjualan Makanan Sisa
+# EcoBite Backend
 
-## 1. MVP (Minimum Viable Product)
-
-**Tujuan Utama**:
-Membuat platform yang memudahkan penjual untuk menawarkan makanan sisa berkualitas dan pembeli untuk membeli dengan harga terjangkau.
-
-**Fitur Utama**:
-
-- **Autentikasi dan Registrasi Pengguna**: Pembeli dan penjual dapat membuat akun dan login.
-- **Manajemen Produk**: Penjual dapat menambah, memperbarui, dan menghapus produk makanan sisa.
-- **Transaksi**: Pembeli dapat melakukan pembayaran online melalui sistem checkout.
-- **Riwayat Pembelian**: Pembeli dan penjual dapat melihat riwayat transaksi masing-masing.
+Aplikasi ini dirancang untuk membantu penjual menawarkan makanan sisa berkualitas dengan harga terjangkau, menghubungkan penjual dan pembeli secara efisien. Aplikasi ini dibangun menggunakan **Golang** dengan arsitektur RESTful API.
 
 ---
 
-## 2. Struktur Database
+## 1. Entity Relationship Diagram (ERD)
 
-### Tabel Utama
+Berikut adalah ERD untuk aplikasi EcoBite:
+![ER Diagram](./assets/erd_ecobite.png)
 
-- **users**
+## 2. High-Level Architecture (HLA)
 
-  - `id` (PK)
-  - `name` (Nama pengguna)
-  - `email`
-  - `password`
-  - `role` (buyer/seller)
-  - `address`
-  - `phone`
+![HLA Diagram](path_to_hla_image.png)
 
-- **Foods**
+Komponen utama dari arsitektur aplikasi ini meliputi:
 
-  - `id` (PK)
-  - `name` (Nama produk)
-  - `description` (Deskripsi produk)
-  - `price` (Harga produk)
-  - `stock` (Stok produk)
-  - `expiry_date` (Tanggal kedaluwarsa)
-  - `location` (Lokasi produk)
-  - `user_id` (FK ke `users`)
-  - `store_id` (FK ke `stores`)
-
-- **orders**
-
-  - `id` (PK)
-  - `user_id` (FK ke `users`)
-  - `total_amount` (Total harga)
-  - `status` (Status pesanan)
-  - `order_date` (Tanggal pesanan)
-
-- **order_items**
-  - `id` (PK)
-  - `order_id` (FK ke `orders`)
-  - `food_id` (FK ke `foods`)
-  - `quantity` (Jumlah produk)
-  - `price` (Harga satuan)
-
-### Relasi Antar Tabel
-
-- **Users - Stores**: Satu pengguna (penjual) dapat memiliki banyak toko.
-- **Stores - Products**: Satu toko dapat memiliki banyak produk.
-- **Users - Orders**: Satu pengguna (pembeli) dapat memiliki banyak transaksi.
-- **Orders - Order Items**: Satu transaksi dapat memiliki banyak item produk.
+- **Backend API**: Server RESTful yang ditulis dalam Golang untuk menangani proses bisnis dan pengelolaan data.
+- **Database**: Penyimpanan data terstruktur (MySQL atau PostgreSQL).
+- **External Services** seperti API Pembayaran dan AI untuk Description produk.
 
 ---
 
-## 3. Penerapan AI
+## 3. Cara Instalasi dan Penggunaan
 
-**Integrasi Gen AI untuk Meningkatkan Fitur**:
+### Prasyarat
 
-- **Deskripsi Produk Otomatis**: Membantu penjual membuat deskripsi produk menarik dengan memasukkan informasi dasar, di mana AI memberikan saran untuk deskripsi produk.
+- Golang
+- Database (MySQL atau PostgreSQL)
+- Alat pendukung seperti Postman untuk pengujian API
 
----
+### Langkah Instalasi
 
-## 4. Penerapan API Eksternal
+1. Clone repositori:
 
-**API Eksternal yang Dapat Diterapkan**:
+```
+git clone https://github.com/MHafidafandi/mini_project_hafid.git
+cd mini_project_hafid
+```
 
-1. **Payment Gateway API** (Contoh: Midtrans, Stripe)
-   - Untuk memproses pembayaran online dengan aman saat checkout.
+2. Install Depedencies
 
----
+```
+go mod tidy
+```
+
+3. Contoh env
+
+```
+DATABASE_USER="root"
+DATABASE_PASSWORD="password"
+DATABASE_HOST="localhost"
+DATABASE_PORT="3306"
+DATABASE_NAME="food_sale"
+JWT_SECRET_KEY="your_jwt_secret"
+```
+
+4. Run app
+
+```
+go run main.go
+```
+
+## Documentation Api
+
+### Endpoint Api dapat dilihat disini
+
+```
+http://greenenvironment/swagger/index.html
+```

@@ -14,6 +14,17 @@ type MidtransNotificationController struct {
 	paymentGatewayUsecase usecase.PaymentGatewayUsecase
 }
 
+// @Summary Handle Midtrans payment notification
+// @Description Receives payment status updates from Midtrans and updates the transaction status accordingly
+// @Tags webhooks
+// @Accept json
+// @Produce json
+// @Param notificationPayloads body map[string]interface{} true "Midtrans notification payload"
+// @Success 200 {object} response.BaseResponse[any] "Transaction status updated successfully"
+// @Failure 400 {object} response.BaseResponse[any] "Invalid input data"
+// @Failure 404 {object} response.BaseResponse[any] "Order not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Router /webhook/midtrans [post]
 func (h *MidtransNotificationController) HandlerNotification(c echo.Context) error {
 	var notificationPayloads map[string]interface{}
 
