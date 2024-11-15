@@ -1,0 +1,77 @@
+name: ci/cd pipelines
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    name: 'Run unit test and lint'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.21
+      - name: Run unit test
+        run: go test -v ./...
+
+  build-and-push-docker:
+    runs-on: ubuntu-latest
+    needs: testing
+    name: 'Run golang build'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.21
+      - name: create env file
+        run: |
+          echo "${{secrets.ENV}}" >> .env
+      - name: build docker
+        run: docker build -t hafiddd/mini_project_ecobite:1.0.0 .
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: push image
+        run: docker push hafiddd/mini_project_ecobite:1.0.0
+  deploy:
+    needs: build-and-push-docker
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_URI: ${{ secrets.IMAGE_URI }}
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USER: ${{ secrets.EC2_USER }}
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Create PEM file from secret
+        run: |
+          echo "${{ secrets.EC2_PEM_KEY }}" > ec2-key.pem
+          chmod 600 ec2-key.pem  # Set appropriate permissions
+
+      - name: Deploy to EC2
+        run: |
+          ssh -i ec2-key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
+            # Stop the current container if running
+            sudo docker ps -q --filter "name=my-container" | grep -q . && sudo docker stop my-container || true
+            sudo docker rm my-container || true
+
+            # Pull the latest image from ECR
+            sudo docker pull $IMAGE_URI
+
+            # Run the new container
+            sudo docker run -d --name my-container -p 80:8000 $IMAGE_URI
+          EOF
+
+      - name: Clean up PEM file
+        run: rm -f ec2-key.pem
