@@ -66,5 +66,5 @@ go run main.go
 ### Endpoint Api dapat dilihat disini
 
 ```
-http://greenenvironment/swagger/index.html
+https://greenenvironment.my.id/swagger/index.html
 ```

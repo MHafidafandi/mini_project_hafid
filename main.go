@@ -25,7 +25,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host greenenvironment
+// @host https://greenenvironment.my.id
 // @BasePath /api/v1
 
 // @securityDefinitions.apikey BearerAuth

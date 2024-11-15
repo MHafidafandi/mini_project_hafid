@@ -5,7 +5,6 @@ import (
 	"miniproject/constant"
 	"miniproject/internal/dto/request"
 	"miniproject/internal/dto/response"
-	"miniproject/internal/models"
 	"miniproject/internal/usecase"
 	"net/http"
 
@@ -100,7 +99,7 @@ func (h *OrderController) GetAllUserOrder(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, response.BaseResponse[[]models.Order]{
+	return c.JSON(http.StatusOK, response.BaseResponse[[]map[string]interface{}]{
 		Status:  true,
 		Message: "Get orders successfully",
 		Data:    orders,
@@ -136,10 +135,10 @@ func (h *OrderController) GetOrderById(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, response.BaseResponse[models.Order]{
+	return c.JSON(http.StatusOK, response.BaseResponse[map[string]interface{}]{
 		Status:  true,
 		Message: "Get order successfully",
-		Data:    *orders,
+		Data:    orders,
 	})
 
 }
