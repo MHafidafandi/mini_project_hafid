@@ -1,0 +1,2201 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>configs: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">miniproject/configs/config.go (88.9%)</option>
+				
+				<option value="file1">miniproject/databases/gorm.go (0.0%)</option>
+				
+				<option value="file2">miniproject/helper/JWT_token.go (18.8%)</option>
+				
+				<option value="file3">miniproject/helper/auth.go (100.0%)</option>
+				
+				<option value="file4">miniproject/helper/descGenereateAI.go (0.0%)</option>
+				
+				<option value="file5">miniproject/helper/validator.go (0.0%)</option>
+				
+				<option value="file6">miniproject/internal/handler/food_handler.go (0.0%)</option>
+				
+				<option value="file7">miniproject/internal/handler/order_handler.go (0.0%)</option>
+				
+				<option value="file8">miniproject/internal/handler/user_handler.go (0.0%)</option>
+				
+				<option value="file9">miniproject/internal/handler/webhook_midtrans_handler.go (0.0%)</option>
+				
+				<option value="file10">miniproject/internal/middlewares/user_valid.go (0.0%)</option>
+				
+				<option value="file11">miniproject/internal/midtrans/midtrans.go (0.0%)</option>
+				
+				<option value="file12">miniproject/internal/repository/gormDB/food_repository.go (0.0%)</option>
+				
+				<option value="file13">miniproject/internal/repository/gormDB/order_item_repository.go (0.0%)</option>
+				
+				<option value="file14">miniproject/internal/repository/gormDB/order_repository.go (0.0%)</option>
+				
+				<option value="file15">miniproject/internal/repository/gormDB/payment_repository.go (0.0%)</option>
+				
+				<option value="file16">miniproject/internal/repository/gormDB/user_repository.go (0.0%)</option>
+				
+				<option value="file17">miniproject/internal/repository/mocks/FoodRepository.go (60.0%)</option>
+				
+				<option value="file18">miniproject/internal/repository/mocks/OrderItemRepository.go (50.0%)</option>
+				
+				<option value="file19">miniproject/internal/repository/mocks/OrderRepository.go (66.7%)</option>
+				
+				<option value="file20">miniproject/internal/repository/mocks/PaymentRepository.go (33.3%)</option>
+				
+				<option value="file21">miniproject/internal/repository/mocks/UserRepository.go (100.0%)</option>
+				
+				<option value="file22">miniproject/internal/routes/route.go (0.0%)</option>
+				
+				<option value="file23">miniproject/internal/usecase/food_usecase.go (41.9%)</option>
+				
+				<option value="file24">miniproject/internal/usecase/order_usecase.go (20.6%)</option>
+				
+				<option value="file25">miniproject/internal/usecase/paymen_gateway_usecase.go (0.0%)</option>
+				
+				<option value="file26">miniproject/internal/usecase/user_usecase.go (82.1%)</option>
+				
+				<option value="file27">miniproject/main.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package configs
+
+import (
+        "fmt"
+
+        "github.com/spf13/viper"
+)
+
+type config struct {
+        AppPort              string `mapstructure:"APP_PORT"`
+        DBUsername           string `mapstructure:"DBUSERNAME"`
+        DBPassword           string `mapstructure:"DBPASSWORD"`
+        DBAddress            string `mapstructure:"DBADDRESS"`
+        DBName               string `mapstructure:"DBNAME"`
+        JWTSecret            string `mapstructure:"JWT_SECRET"`
+        GeminiAPIKey         string `mapstructure:"GEMINI_API_KEY"`
+        MidtransServerKeyDev string `mapstructure:"MIDTRANS_SERVER_KEY_DEV"`
+        AuthString           string `mapstructure:"AUTH_STRING"`
+}
+
+var Cfg *config
+
+func InitConfig() <span class="cov8" title="1">{
+        cfg := &amp;config{}
+
+        viper.AddConfigPath(".")
+        viper.SetConfigName(".env")
+        viper.SetConfigType("env")
+
+        if err := viper.ReadInConfig(); err != nil </span><span class="cov8" title="1">{
+                fmt.Printf("Error reading env : %v", err)
+        }</span>
+
+        <span class="cov8" title="1">if err := viper.Unmarshal(&amp;cfg); err != nil </span><span class="cov0" title="0">{
+                fmt.Printf("Error while unmarshal env : %v", err)
+        }</span>
+
+        <span class="cov8" title="1">Cfg = cfg</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package databases
+
+import (
+        "fmt"
+        "miniproject/configs"
+        "miniproject/internal/models"
+
+        "gorm.io/driver/mysql"
+        "gorm.io/gorm"
+)
+
+var DB *gorm.DB
+
+func InitMysqlDatabase() <span class="cov0" title="0">{
+        username := configs.Cfg.DBUsername
+        password := configs.Cfg.DBPassword
+        addrress := configs.Cfg.DBAddress
+        dbName := configs.Cfg.DBName
+
+        dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&amp;parseTime=True&amp;loc=Local", username, password, addrress, dbName)
+
+        db, err := gorm.Open(mysql.Open(dsn))
+
+        if err != nil </span><span class="cov0" title="0">{
+                panic("Failed to Connect database")</span>
+        }
+
+        <span class="cov0" title="0">DB = db
+        DB.AutoMigrate(&amp;models.User{}, &amp;models.Food{}, &amp;models.Order{}, &amp;models.OrderItem{}, &amp;models.Payment{})</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package helper
+
+import (
+        "fmt"
+        "miniproject/configs"
+        "strings"
+        "time"
+
+        "github.com/golang-jwt/jwt/v5"
+        "github.com/labstack/echo/v4"
+)
+
+type JwtCustomClaims struct {
+        Id   string `json:"name"`
+        Role string `json:"role"`
+        jwt.RegisteredClaims
+}
+
+func CreateToken(userId string, role string) (string, error) <span class="cov8" title="1">{
+
+        claims := &amp;JwtCustomClaims{
+                userId,
+                role,
+                jwt.RegisteredClaims{
+                        ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
+                },
+        }
+
+        token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+        return token.SignedString([]byte(configs.Cfg.JWTSecret))
+}</span>
+
+func ExtractToken(c echo.Context) (interface{}, error) <span class="cov0" title="0">{
+        claims := &amp;JwtCustomClaims{}
+        tokenString := c.Request().Header.Get("Authorization")
+
+        formattedTokenString := strings.Replace(tokenString, "Bearer ", "", 1)
+
+        token, err := jwt.ParseWithClaims(formattedTokenString, claims, func(token *jwt.Token) (interface{}, error) </span><span class="cov0" title="0">{
+                if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+                }</span>
+
+                <span class="cov0" title="0">return []byte(configs.Cfg.JWTSecret), nil</span>
+        })
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">if token.Valid </span><span class="cov0" title="0">{
+                data := map[string]string{
+                        "user_id": claims.Id,
+                        "role":    claims.Role,
+                }
+
+                return data, nil
+        }</span>
+
+        <span class="cov0" title="0">return nil, err</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package helper
+
+import (
+        "golang.org/x/crypto/bcrypt"
+)
+
+func HashPassword(password string) (string, error) <span class="cov8" title="1">{
+        cost := bcrypt.DefaultCost
+
+        hash, err := bcrypt.GenerateFromPassword([]byte(password), cost)
+
+        return string(hash), err
+}</span>
+
+func ComparePassword(hashed string, password string) bool <span class="cov8" title="1">{
+        err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
+
+        return err == nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package helper
+
+import (
+        "context"
+        "fmt"
+        "miniproject/configs"
+
+        "github.com/google/generative-ai-go/genai"
+        "google.golang.org/api/option"
+)
+
+func GenerateDescription(foodName string) (string, error) <span class="cov0" title="0">{
+        apiKey := configs.Cfg.GeminiAPIKey
+        ctx := context.Background()
+
+        prompt := fmt.Sprintf("Buat deskripsi menarik untuk makanan sisa bernama %s yang akan dijual. Jelaskan kualitas, rasa, dan manfaat dari makanan tersebut.", foodName)
+
+        client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">defer client.Close()
+
+        model := client.GenerativeModel("gemini-1.5-flash")
+
+        model.SetTemperature(0.5)
+        model.SetTopK(40)
+        model.SetTopP(0.95)
+        model.SetMaxOutputTokens(100)
+        model.ResponseMIMEType = "text/plain"
+
+        resp, err := model.GenerateContent(ctx, genai.Text(prompt))
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+
+        <span class="cov0" title="0">var description string
+        for _, part := range resp.Candidates[0].Content.Parts </span><span class="cov0" title="0">{
+                description += fmt.Sprint(part)
+        }</span>
+
+        <span class="cov0" title="0">return description, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package helper
+
+import (
+        "net/http"
+
+        "github.com/go-playground/validator"
+        "github.com/labstack/echo/v4"
+)
+
+type CustomValidator struct {
+        Validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i interface{}) error <span class="cov0" title="0">{
+        if err := cv.Validator.Struct(i); err != nil </span><span class="cov0" title="0">{
+                return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package handler
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/dto/request"
+        "miniproject/internal/dto/response"
+        "miniproject/internal/models"
+        "miniproject/internal/usecase"
+        "net/http"
+
+        "github.com/labstack/echo/v4"
+)
+
+type FoodController struct {
+        foodUseCase usecase.FoodUsecase
+}
+
+func NewFoodController(foodUseCase usecase.FoodUsecase) *FoodController <span class="cov0" title="0">{
+        return &amp;FoodController{foodUseCase: foodUseCase}
+}</span>
+
+func (fc *FoodController) CreateFoodHandler(c echo.Context) error <span class="cov0" title="0">{
+        foodDto := &amp;request.FoodRequest{}
+
+        if err := c.Bind(foodDto); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">if err := c.Validate(*foodDto); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err := fc.foodUseCase.CreateFood(*foodDto)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(http.StatusCreated, response.BaseResponse[any]{
+                Status:  true,
+                Message: "Create Food successfully",
+        })</span>
+}
+
+func (fc *FoodController) GetAllHandler(c echo.Context) error <span class="cov0" title="0">{
+        foods, err := fc.foodUseCase.FindAllFood()
+
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: err.Error(),
+                })
+        }</span>
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[[]models.Food]{
+                Status:  true,
+                Message: "Get All Foods successfully",
+                Data:    foods,
+        })</span>
+}
+
+func (fc *FoodController) GetFoodByIdHandler(c echo.Context) error <span class="cov0" title="0">{
+        id := c.Param("id")
+
+        food, err := fc.foodUseCase.FindFoodById(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[models.Food]{
+                Status:  true,
+                Message: "Get Food successfully",
+                Data:    *food,
+        })</span>
+}
+
+func (fc *FoodController) UpdateFoodHandler(c echo.Context) error <span class="cov0" title="0">{
+        id := c.Param("id")
+
+        foodDto := &amp;request.FoodUpdate{}
+
+        if err := c.Bind(foodDto); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">if err := c.Validate(*foodDto); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err := fc.foodUseCase.UpdateFood(id, *foodDto)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: err.Error(),
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+        <span class="cov0" title="0">return c.JSON(http.StatusCreated, response.BaseResponse[any]{
+                Status:  true,
+                Message: "Update Food successfully",
+        })</span>
+}
+
+func (fc FoodController) DeleteFoodHandler(c echo.Context) error <span class="cov0" title="0">{
+        foodId := c.Param("id")
+
+        err := fc.foodUseCase.DeleteFood(foodId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "food id not found",
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[any]{
+                Status:  true,
+                Message: "delete food successfully",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package handler
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/dto/request"
+        "miniproject/internal/dto/response"
+        "miniproject/internal/models"
+        "miniproject/internal/usecase"
+        "net/http"
+
+        "github.com/labstack/echo/v4"
+)
+
+type OrderController struct {
+        orderUsecase usecase.OrderUsecase
+}
+
+func NewOrderController(orderUsecase usecase.OrderUsecase) *OrderController <span class="cov0" title="0">{
+        return &amp;OrderController{orderUsecase}
+}</span>
+
+func (h *OrderController) CreateNewOrderHandler(c echo.Context) error <span class="cov0" title="0">{
+        orderDTO := request.CreateOrderRequest{}
+
+        if err := c.Bind(&amp;orderDTO); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">if err := c.Validate(orderDTO); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">data, err := h.orderUsecase.CreateOrder(orderDTO)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: err.Error(),
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusCreated, response.BaseResponse[map[string]interface{}]{
+                Status:  true,
+                Message: "Create Order Successfully",
+                Data:    data,
+        })</span>
+}
+
+func (h *OrderController) GetAllUserOrder(c echo.Context) error <span class="cov0" title="0">{
+        userId := c.Param("user_id")
+
+        orders, err := h.orderUsecase.FindAllUserOrder(userId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "user id not found",
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[[]models.Order]{
+                Status:  true,
+                Message: "Get orders successfully",
+                Data:    orders,
+        })</span>
+}
+
+func (h *OrderController) GetOrderById(c echo.Context) error <span class="cov0" title="0">{
+        orderId := c.Param("id")
+
+        orders, err := h.orderUsecase.FindOrderById(orderId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "order id not found",
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[models.Order]{
+                Status:  true,
+                Message: "Get order successfully",
+                Data:    *orders,
+        })</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package handler
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/dto/request"
+        "miniproject/internal/dto/response"
+        "miniproject/internal/models"
+        "miniproject/internal/usecase"
+        "net/http"
+
+        "github.com/labstack/echo/v4"
+)
+
+type UserController struct {
+        userUsecase usecase.UserUsecase
+}
+
+func NewUserController(userUsecase usecase.UserUsecase) *UserController <span class="cov0" title="0">{
+        return &amp;UserController{userUsecase: userUsecase}
+}</span>
+
+func (uc *UserController) HandlerRegister(c echo.Context) error <span class="cov0" title="0">{
+        userDTO := request.UserRequest{}
+
+        if err := c.Bind(&amp;userDTO); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">if err := c.Validate(userDTO); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">if userDTO.Role != "buyer" &amp;&amp; userDTO.Role != "seller" </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "only allowed roles buyer and seller",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err := uc.userUsecase.RegisterUser(userDTO)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrDataAlreadyExist) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusConflict, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "email already exist",
+                        })
+                }</span>
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: err.Error(),
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusCreated, response.BaseResponse[any]{
+                Status:  true,
+                Message: "registered successfully",
+        })</span>
+
+}
+
+func (uc *UserController) HandlerLogin(c echo.Context) error <span class="cov0" title="0">{
+        loginDTO := struct {
+                Email    string `json:"email" form:"email"`
+                Password string `json:"password" form:"password"`
+        }{}
+
+        if err := c.Bind(&amp;loginDTO); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">token, err := uc.userUsecase.LoginUser(loginDTO.Email, loginDTO.Password)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusConflict, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "wrong email or password",
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[map[string]string]{
+                Status:  true,
+                Message: "login successfully",
+                Data: map[string]string{
+                        "token": token,
+                },
+        })</span>
+}
+
+func (uc UserController) GetUserByIdHandler(c echo.Context) error <span class="cov0" title="0">{
+        id := c.Param("id")
+
+        user, err := uc.userUsecase.FindUserById(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[models.User]{
+                Status:  true,
+                Message: "Get user successfully",
+                Data:    *user,
+        })</span>
+}
+
+func (uc UserController) UpdateUserHandler(c echo.Context) error <span class="cov0" title="0">{
+        userId := c.Param("id")
+        userDto := request.UserUpdate{}
+
+        if err := c.Bind(&amp;userDto); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">if err := c.Validate(userDto); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">if userDto.Role != "buyer" &amp;&amp; userDto.Role != "seller" </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "only allowed roles buyer and seller",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err := uc.userUsecase.UpdateUser(userId, userDto)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "user id not found",
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[any]{
+                Status:  true,
+                Message: "update user successfully",
+        })</span>
+}
+
+func (uc UserController) DeleteUserHandler(c echo.Context) error <span class="cov0" title="0">{
+        userId := c.Param("id")
+
+        err := uc.userUsecase.DeleteUser(userId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "user id not found",
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[any]{
+                Status:  true,
+                Message: "delete user successfully",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package handler
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/dto/response"
+        "miniproject/internal/usecase"
+        "net/http"
+
+        "github.com/labstack/echo/v4"
+)
+
+type MidtransNotificationController struct {
+        paymentGatewayUsecase usecase.PaymentGatewayUsecase
+}
+
+func (h *MidtransNotificationController) HandlerNotification(c echo.Context) error <span class="cov0" title="0">{
+        var notificationPayloads map[string]interface{}
+
+        if err := c.Bind(&amp;notificationPayloads); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "fill all required fields",
+                })
+        }</span>
+
+        <span class="cov0" title="0">orderId := notificationPayloads["order_id"].(string)
+
+        err := h.paymentGatewayUsecase.MidtransNotification(orderId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, constant.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusNotFound, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: err.Error(),
+                        })
+                }</span>
+
+                <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                        Status:  false,
+                        Message: "internal server error",
+                })</span>
+        }
+
+        <span class="cov0" title="0">return c.JSON(http.StatusOK, response.BaseResponse[any]{
+                Status:  true,
+                Message: "success update transaction status",
+        })</span>
+}
+
+func NewMidtransNotificationController(paymentGatewayUsecase usecase.PaymentGatewayUsecase) *MidtransNotificationController <span class="cov0" title="0">{
+        return &amp;MidtransNotificationController{paymentGatewayUsecase}
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package mddlwrs
+
+import (
+        "miniproject/helper"
+        "miniproject/internal/dto/response"
+        "net/http"
+
+        "github.com/labstack/echo/v4"
+)
+
+func CheckIsValidUser(next echo.HandlerFunc) echo.HandlerFunc <span class="cov0" title="0">{
+        return func(c echo.Context) error </span><span class="cov0" title="0">{
+                tokenExtracted, err := helper.ExtractToken(c)
+                id := c.Param("id")
+
+                if err != nil </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusUnauthorized, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: err.Error(),
+                        })
+                }</span>
+
+                <span class="cov0" title="0">payloads := tokenExtracted.(map[string]string)
+                userId := payloads["user_id"]
+
+                if userId != id </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusForbidden, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "user role must be user",
+                        })
+                }</span>
+                <span class="cov0" title="0">return next(c)</span>
+        }
+}
+func CheckIsValidBuyer(next echo.HandlerFunc) echo.HandlerFunc <span class="cov0" title="0">{
+        return func(c echo.Context) error </span><span class="cov0" title="0">{
+                tokenExtracted, err := helper.ExtractToken(c)
+
+                if err != nil </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusUnauthorized, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: err.Error(),
+                        })
+                }</span>
+
+                <span class="cov0" title="0">payloads := tokenExtracted.(map[string]string)
+                role := payloads["role"]
+
+                if role != "buyer" </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusForbidden, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "user role must be buyer",
+                        })
+                }</span>
+                <span class="cov0" title="0">return next(c)</span>
+        }
+}
+func CheckIsValidSeller(next echo.HandlerFunc) echo.HandlerFunc <span class="cov0" title="0">{
+        return func(c echo.Context) error </span><span class="cov0" title="0">{
+                tokenExtracted, err := helper.ExtractToken(c)
+
+                if err != nil </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusUnauthorized, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: err.Error(),
+                        })
+                }</span>
+
+                <span class="cov0" title="0">payloads := tokenExtracted.(map[string]string)
+                role := payloads["role"]
+
+                if role != "seller" </span><span class="cov0" title="0">{
+                        return c.JSON(http.StatusForbidden, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: "user role must be seller",
+                        })
+                }</span>
+                <span class="cov0" title="0">return next(c)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package midtrans
+
+import (
+        "context"
+        "fmt"
+        "miniproject/configs"
+        "miniproject/internal/dto/request"
+
+        "github.com/midtrans/midtrans-go"
+        "github.com/midtrans/midtrans-go/snap"
+)
+
+var snapClient snap.Client
+
+type PaymentGatewayInterface interface {
+        InitializeClientMidtrans()
+        CreateTransaction(snap request.PaymentGateway) string
+        CreateUrlTransactionWithGateway(snap request.PaymentGateway) string
+}
+
+type PaymentGateway struct{}
+
+func (r PaymentGateway) InitializeClientMidtrans() <span class="cov0" title="0">{
+        snapClient.New(configs.Cfg.MidtransServerKeyDev, midtrans.Sandbox)
+}</span>
+
+func (r PaymentGateway) CreateTransaction(req request.PaymentGateway) string <span class="cov0" title="0">{
+        snapUrl, err := snapClient.CreateTransactionToken(generateSnapReq(req))
+
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Printf("Midtrans error : %v", err.GetMessage())
+                return err.Error()
+        }</span>
+
+        <span class="cov0" title="0">return snapUrl</span>
+}
+
+func (r PaymentGateway) CreateUrlTransactionWithGateway(req request.PaymentGateway) string <span class="cov0" title="0">{
+        snapClient.Options.SetContext(context.Background())
+
+        snapUrl, err := snapClient.CreateTransactionUrl(generateSnapReq(req))
+
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Printf("Midtrans error : %v", err.GetMessage())
+                return err.Error()
+        }</span>
+
+        <span class="cov0" title="0">return snapUrl</span>
+}
+
+func generateSnapReq(req request.PaymentGateway) *snap.Request <span class="cov0" title="0">{
+        reqSnap := &amp;snap.Request{
+                TransactionDetails: midtrans.TransactionDetails{
+                        OrderID:  req.OrderId,
+                        GrossAmt: req.GrossAmt,
+                },
+                EnabledPayments: []snap.SnapPaymentType{
+                        snap.PaymentTypeBNIVA,
+                        snap.PaymentTypePermataVA,
+                        snap.PaymentTypeBCAVA,
+                        snap.PaymentTypeBRIVA,
+                        snap.PaymentTypeBankTransfer,
+                        snap.PaymentTypeGopay,
+                        snap.PaymentTypeShopeepay,
+                },
+                CustomerDetail: &amp;midtrans.CustomerDetails{
+                        Email: req.Email,
+                        Phone: req.Phone,
+                },
+                Items: &amp;req.Items,
+        }
+
+        return reqSnap
+}</span>
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package gormdb
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/models"
+        "time"
+
+        "gorm.io/gorm"
+)
+
+type foodRepository struct {
+        DB *gorm.DB
+}
+
+func (fr *foodRepository) Create(foodUc models.Food) error <span class="cov0" title="0">{
+        if err := fr.DB.Model(&amp;models.Food{}).Create(foodUc).Error; err != nil </span><span class="cov0" title="0">{
+                return constant.ErrStatusInternalError
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+func (fr *foodRepository) FindAll() ([]models.Food, error) <span class="cov0" title="0">{
+        foods := []models.Food{}
+
+        if err := fr.DB.Model(&amp;models.Food{}).
+                Where("expiry_date &gt; ?", time.Now()).
+                Find(&amp;foods).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, constant.ErrStatusInternalError
+        }</span>
+        <span class="cov0" title="0">return foods, nil</span>
+}
+
+func (fr *foodRepository) FindById(id string) (*models.Food, error) <span class="cov0" title="0">{
+        food := &amp;models.Food{}
+
+        err := fr.DB.Model(&amp;models.Food{}).Where("id = ?", id).Take(food).Error
+
+        if errors.Is(err, gorm.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                return nil, constant.ErrRecordNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                return nil, constant.ErrStatusInternalError
+        }</span>
+
+        <span class="cov0" title="0">return food, nil</span>
+}
+func (fr *foodRepository) Update(id string, foodUc models.Food) error <span class="cov0" title="0">{
+        err := fr.DB.Model(&amp;models.Food{}).Where("id = ?", id).Updates(&amp;foodUc).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return constant.ErrStatusInternalError
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+func (fr *foodRepository) Delete(id string) error <span class="cov0" title="0">{
+        err := fr.DB.Where("id = ?", id).Delete(&amp;models.Food{}).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return constant.ErrStatusInternalError
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func NewFoodRepositoryGorm(db *gorm.DB) foodRepository <span class="cov0" title="0">{
+        return foodRepository{DB: db}
+}</span>
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package gormdb
+
+import (
+        "miniproject/internal/models"
+
+        "gorm.io/gorm"
+)
+
+type orderItemRepository struct {
+        DB *gorm.DB
+}
+
+func (or *orderItemRepository) Create(orderDetailUC []models.OrderItem) error <span class="cov0" title="0">{
+        err := or.DB.Model(&amp;models.OrderItem{}).Create(&amp;orderDetailUC).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (or *orderItemRepository) FindByIdOrder(orderId string) (*[]models.OrderItem, error) <span class="cov0" title="0">{
+        details := &amp;[]models.OrderItem{}
+
+        err := or.DB.Model(&amp;models.OrderItem{}).Where("order_id = ?", orderId).Preload("Food").Find(&amp;details).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return details, nil</span>
+}
+
+func NewOrderItemRepository(db *gorm.DB) orderItemRepository <span class="cov0" title="0">{
+        return orderItemRepository{DB: db}
+}</span>
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package gormdb
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/models"
+
+        "gorm.io/gorm"
+)
+
+type orderRepository struct {
+        DB *gorm.DB
+}
+
+func (or *orderRepository) Create(orderUC models.Order) error <span class="cov0" title="0">{
+        err := or.DB.Model(&amp;models.Order{}).Create(&amp;orderUC).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return constant.ErrStatusInternalError
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+func (or *orderRepository) FindAll(userId string) (*[]models.Order, error) <span class="cov0" title="0">{
+        orders := &amp;[]models.Order{}
+
+        err := or.DB.Model(&amp;models.Order{}).Where("user_id = ?", userId).Preload("OrderItems.Food").Preload("Payment").Find(&amp;orders).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, constant.ErrStatusInternalError
+        }</span>
+
+        <span class="cov0" title="0">return orders, nil</span>
+}
+func (or *orderRepository) FindById(orderId string) (*models.Order, error) <span class="cov0" title="0">{
+        order := &amp;models.Order{}
+
+        err := or.DB.Model(&amp;models.Order{}).Where("id = ?", orderId).Take(&amp;order).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, gorm.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return nil, constant.ErrRecordNotFound
+                }</span>
+
+                <span class="cov0" title="0">return nil, constant.ErrStatusInternalError</span>
+        }
+
+        <span class="cov0" title="0">return order, nil</span>
+}
+
+func NewOrderRepository(db *gorm.DB) orderRepository <span class="cov0" title="0">{
+        return orderRepository{DB: db}
+}</span>
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package gormdb
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/models"
+
+        "gorm.io/gorm"
+)
+
+type paymentRepository struct {
+        DB *gorm.DB
+}
+
+func (pr *paymentRepository) Create(paymentUC models.Payment) error <span class="cov0" title="0">{
+        err := pr.DB.Model(&amp;models.Payment{}).Create(&amp;paymentUC).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+func (pr *paymentRepository) FindById(paymentId string) (*models.Payment, error) <span class="cov0" title="0">{
+        payment := &amp;models.Payment{}
+
+        err := pr.DB.Model(&amp;models.Payment{}).Where("id = ?", paymentId).Take(&amp;payment).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, gorm.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return nil, constant.ErrRecordNotFound
+                }</span>
+
+                <span class="cov0" title="0">return nil, err</span>
+        }
+
+        <span class="cov0" title="0">return payment, nil</span>
+}
+func (pr *paymentRepository) Update(paymentId string, paymentUC models.Payment) error <span class="cov0" title="0">{
+        err := pr.DB.Model(&amp;models.Payment{}).Where("id = ?", paymentId).Updates(&amp;paymentUC).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+
+}
+func NewPaymentRepository(db *gorm.DB) paymentRepository <span class="cov0" title="0">{
+        return paymentRepository{DB: db}
+}</span>
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package gormdb
+
+import (
+        "errors"
+        "miniproject/constant"
+        "miniproject/internal/models"
+
+        "gorm.io/gorm"
+)
+
+type userRepository struct {
+        DB *gorm.DB
+}
+
+func (ur *userRepository) Create(userDTO models.User) error <span class="cov0" title="0">{
+
+        err := ur.DB.Model(&amp;models.User{}).Create(userDTO).Error
+        if err != nil </span><span class="cov0" title="0">{
+                return constant.ErrStatusInternalError
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (ur *userRepository) FindByEmail(email string) (*models.User, error) <span class="cov0" title="0">{
+        user := &amp;models.User{}
+
+        err := ur.DB.Model(&amp;models.User{}).Where("email = ?", email).Take(&amp;user).Error
+
+        if errors.Is(err, gorm.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                return nil, constant.ErrRecordNotFound
+        }</span>
+
+        <span class="cov0" title="0">return user, nil</span>
+}
+
+func (ur *userRepository) FindById(userId string) (*models.User, error) <span class="cov0" title="0">{
+        user := &amp;models.User{}
+
+        err := ur.DB.Model(&amp;models.User{}).Omit("password").Where("id = ?", userId).Take(user).Error
+
+        if errors.Is(err, gorm.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                return nil, constant.ErrRecordNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                return nil, constant.ErrStatusInternalError
+        }</span>
+
+        <span class="cov0" title="0">return user, nil</span>
+}
+func (ur *userRepository) Update(userId string, userUC models.User) error <span class="cov0" title="0">{
+
+        err := ur.DB.Model(&amp;models.User{}).Where("id = ?", userId).Updates(userUC).Error
+        if err != nil </span><span class="cov0" title="0">{
+                return constant.ErrStatusInternalError
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+func (ur *userRepository) Delete(userId string) error <span class="cov0" title="0">{
+        err := ur.DB.Where("id = ?", userId).Delete(&amp;models.User{}).Error
+        if err != nil </span><span class="cov0" title="0">{
+                return constant.ErrStatusInternalError
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func NewUserRepositoryGorm(db *gorm.DB) userRepository <span class="cov0" title="0">{
+        return userRepository{DB: db}
+}</span>
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">// Code generated by mockery v2.46.3. DO NOT EDIT.
+
+package mocks
+
+import (
+        models "miniproject/internal/models"
+
+        mock "github.com/stretchr/testify/mock"
+)
+
+// FoodRepository is an autogenerated mock type for the FoodRepository type
+type FoodRepository struct {
+        mock.Mock
+}
+
+// Create provides a mock function with given fields: foodUc
+func (_m *FoodRepository) Create(foodUc models.Food) error <span class="cov0" title="0">{
+        ret := _m.Mock.Called(foodUc)
+
+        return ret.Error(0)
+
+
+}</span>
+
+// Delete provides a mock function with given fields: id
+func (_m *FoodRepository) Delete(id string) error <span class="cov8" title="1">{
+        ret := _m.Mock.Called(id)
+
+        return ret.Error(0)
+}</span>
+
+// FindAll provides a mock function with given fields:
+func (_m *FoodRepository) FindAll() ([]models.Food, error) <span class="cov8" title="1">{
+        ret := _m.Mock.Called()
+
+
+        return ret.Get(0).([]models.Food), ret.Error(1)
+}</span>
+
+// FindById provides a mock function with given fields: id
+func (_m *FoodRepository) FindById(id string) (*models.Food, error) <span class="cov8" title="1">{
+        ret := _m.Mock.Called(id)
+
+
+        return ret.Get(0).(*models.Food),ret.Error(1)
+}</span>
+
+// Update provides a mock function with given fields: id, foodUc
+func (_m *FoodRepository) Update(id string, foodUc models.Food) error <span class="cov0" title="0">{
+        ret := _m.Mock.Called(id, foodUc)
+
+        return ret.Error(0)
+}</span>
+
+
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package mocks
+
+import (
+        "miniproject/internal/models"
+
+        "github.com/stretchr/testify/mock"
+)
+
+type OrderItemRepositoryMock struct {
+        mock.Mock
+}
+
+func (m *OrderItemRepositoryMock) Create(orderDetailUC []models.OrderItem) error <span class="cov0" title="0">{
+        args := m.Called(orderDetailUC)
+        return args.Error(0)
+}</span>
+
+func (m *OrderItemRepositoryMock) FindByIdOrder(orderId string) (*[]models.OrderItem, error) <span class="cov8" title="1">{
+        args := m.Called(orderId)
+        return args.Get(0).(*[]models.OrderItem), args.Error(1)
+}</span>
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package mocks
+
+import (
+        "miniproject/internal/models"
+
+        "github.com/stretchr/testify/mock"
+)
+
+type OrderRepositoryMock struct {
+        mock.Mock
+}
+
+func (m *OrderRepositoryMock) Create(orderUC models.Order) error <span class="cov0" title="0">{
+        args := m.Called(orderUC)
+        return args.Error(0)
+}</span>
+
+func (m *OrderRepositoryMock) FindAll(userId string) (*[]models.Order, error) <span class="cov8" title="1">{
+        args := m.Called(userId)
+        return args.Get(0).(*[]models.Order), args.Error(1)
+}</span>
+
+func (m *OrderRepositoryMock) FindById(orderId string) (*models.Order, error) <span class="cov8" title="1">{
+        args := m.Called(orderId)
+        return args.Get(0).(*models.Order), args.Error(1)
+}</span>
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package mocks
+
+import (
+        "miniproject/internal/models"
+
+        "github.com/stretchr/testify/mock"
+)
+
+type PaymentRepositoryMock struct {
+        mock.Mock
+}
+
+func (m *PaymentRepositoryMock) Create(paymentUC models.Payment) error <span class="cov0" title="0">{
+        args := m.Called(paymentUC)
+        return args.Error(0)
+}</span>
+
+func (m *PaymentRepositoryMock) FindById(paymentId string) (*models.Payment, error) <span class="cov8" title="1">{
+        args := m.Called(paymentId)
+        return args.Get(0).(*models.Payment), args.Error(1)
+}</span>
+
+func (m *PaymentRepositoryMock) Update(paymentId string, paymentUC models.Payment) error <span class="cov0" title="0">{
+        args := m.Called(paymentId, paymentUC)
+        return args.Error(0)
+}</span>
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package mocks
+
+import (
+        "miniproject/internal/models"
+
+        "github.com/stretchr/testify/mock"
+)
+
+type UserRepositoryMock struct {
+        mock.Mock
+}
+
+func (m *UserRepositoryMock) Create(userUC models.User) error <span class="cov8" title="1">{
+        args := m.Called(userUC)
+        return args.Error(0)
+}</span>
+
+func (m *UserRepositoryMock) FindByEmail(email string) (*models.User, error) <span class="cov8" title="1">{
+        args := m.Called(email)
+        return args.Get(0).(*models.User), args.Error(1)
+}</span>
+
+func (m *UserRepositoryMock) FindById(userId string) (*models.User, error) <span class="cov8" title="1">{
+        args := m.Called(userId)
+        return args.Get(0).(*models.User), args.Error(1)
+}</span>
+
+func (m *UserRepositoryMock) Update(userId string, userUC models.User) error <span class="cov8" title="1">{
+        args := m.Called(userId, userUC)
+        return args.Error(0)
+}</span>
+
+func (m *UserRepositoryMock) Delete(userId string) error <span class="cov8" title="1">{
+        args := m.Called(userId)
+        return args.Error(0)
+}</span>
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package routes
+
+import (
+        "miniproject/configs"
+        "miniproject/constant"
+        "miniproject/helper"
+        "miniproject/internal/dto/response"
+        "miniproject/internal/handler"
+        mddlwrs "miniproject/internal/middlewares"
+        gormdb "miniproject/internal/repository/gormDB"
+        "miniproject/internal/usecase"
+        "net/http"
+
+        "github.com/golang-jwt/jwt/v5"
+        echojwt "github.com/labstack/echo-jwt/v4"
+        "github.com/labstack/echo/v4"
+        "gorm.io/gorm"
+)
+
+func New(db *gorm.DB, e *echo.Echo) <span class="cov0" title="0">{
+
+        v1 := e.Group("/api/v1")
+
+        var ConfigJwt = echojwt.Config{
+                NewClaimsFunc: func(c echo.Context) jwt.Claims </span><span class="cov0" title="0">{
+                        return new(helper.JwtCustomClaims)
+                }</span>,
+                ErrorHandler: func(c echo.Context, err error) error <span class="cov0" title="0">{
+                        if err.Error() == constant.ErrMissingToken.Error() </span><span class="cov0" title="0">{
+                                return c.JSON(http.StatusUnauthorized, response.BaseResponse[any]{
+                                        Status:  false,
+                                        Message: "Missing Token",
+                                })
+                        }</span>
+                        <span class="cov0" title="0">if err.Error() == constant.ErrInvalidToken.Error() </span><span class="cov0" title="0">{
+                                return c.JSON(http.StatusUnauthorized, response.BaseResponse[any]{
+                                        Status:  false,
+                                        Message: "Invalid Token",
+                                })
+                        }</span>
+
+                        <span class="cov0" title="0">return c.JSON(http.StatusInternalServerError, response.BaseResponse[any]{
+                                Status:  false,
+                                Message: err.Error(),
+                        })</span>
+                },
+                SigningKey: []byte(configs.Cfg.JWTSecret),
+        }
+        <span class="cov0" title="0">userRepo := gormdb.NewUserRepositoryGorm(db)
+        foodRepo := gormdb.NewFoodRepositoryGorm(db)
+        orderRepo := gormdb.NewOrderRepository(db)
+        orderItemRepo := gormdb.NewOrderItemRepository(db)
+        paymentRepo := gormdb.NewPaymentRepository(db)
+
+        userUC := usecase.NewUserUsecase(&amp;userRepo)
+        foodUC := usecase.NewFoodUsecase(&amp;foodRepo)
+        orderUC := usecase.NewOrderUsecase(&amp;orderRepo, &amp;orderItemRepo, &amp;userRepo, &amp;foodRepo, &amp;paymentRepo)
+        paymentGatwayUC := usecase.NewPaymentGatewayUsecase(&amp;orderRepo, &amp;paymentRepo)
+
+        userHandler := handler.NewUserController(&amp;userUC)
+        foodHandler := handler.NewFoodController(&amp;foodUC)
+        orderHandler := handler.NewOrderController(orderUC)
+        paymentGatwayHandler := handler.NewMidtransNotificationController(paymentGatwayUC)
+
+        v1.POST("/webhook/midtrans", paymentGatwayHandler.HandlerNotification)
+
+        v1.POST("/register", userHandler.HandlerRegister)
+        v1.POST("/login", userHandler.HandlerLogin)
+
+        u := v1.Group("/users", echojwt.WithConfig(ConfigJwt))
+        u.GET("/:id", userHandler.GetUserByIdHandler, mddlwrs.CheckIsValidUser)
+        u.PUT("/:id", userHandler.UpdateUserHandler, mddlwrs.CheckIsValidUser)
+        u.DELETE("/:id", userHandler.DeleteUserHandler, mddlwrs.CheckIsValidUser)
+
+        f := v1.Group("/foods", echojwt.WithConfig(ConfigJwt))
+        f.POST("", foodHandler.CreateFoodHandler, mddlwrs.CheckIsValidSeller)
+        f.GET("", foodHandler.GetAllHandler)
+        f.GET("/:id", foodHandler.GetFoodByIdHandler)
+        f.PUT("/:id", foodHandler.UpdateFoodHandler, mddlwrs.CheckIsValidSeller)
+        f.DELETE("/:id", foodHandler.DeleteFoodHandler, mddlwrs.CheckIsValidSeller)
+
+        o := v1.Group("/orders", echojwt.WithConfig(ConfigJwt))
+        o.POST("", orderHandler.CreateNewOrderHandler, mddlwrs.CheckIsValidBuyer)
+        o.GET("/:id", orderHandler.GetOrderById)
+        o.GET("/users/:user_id", orderHandler.GetAllUserOrder)</span>
+}
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package usecase
+
+import (
+        "miniproject/constant"
+        "miniproject/helper"
+        "miniproject/internal/dto/request"
+        "miniproject/internal/models"
+        "miniproject/internal/repository" // Asumsi ada package repository
+        "time"
+
+        "github.com/google/uuid"
+)
+
+type FoodUsecase interface {
+        CreateFood(foodDto request.FoodRequest) error
+        FindAllFood() ([]models.Food, error)
+        FindFoodById(id string) (*models.Food, error)
+        UpdateFood(id string, foodDto request.FoodUpdate) error
+        DeleteFood(id string) error
+}
+
+type foodUsecase struct {
+        foodRepo repository.FoodRepository // Asumsi ada interface FoodRepository
+}
+
+// NewFoodUsecase adalah constructor untuk FoodUsecase
+func NewFoodUsecase(foodRepo repository.FoodRepository) foodUsecase <span class="cov8" title="1">{
+        return foodUsecase{
+                foodRepo: foodRepo,
+        }
+}</span>
+
+func (u *foodUsecase) CreateFood(foodDto request.FoodRequest) error <span class="cov0" title="0">{
+
+        description, err := helper.GenerateDescription(foodDto.Name)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">foodUc := models.Food{
+                ID:          uuid.NewString(),
+                Name:        foodDto.Name,
+                Description: description,
+                Price:       foodDto.Price,
+                Stock:       foodDto.Stock,
+                ExpiryDate:  time.Now().Add(time.Hour * 24 * time.Duration(foodDto.ExpiryDate)),
+                Location:    foodDto.Location,
+                CreatedAt:   time.Now(),
+                UpdatedAt:   time.Now(),
+        }
+
+        return u.foodRepo.Create(foodUc)</span>
+}
+
+func (u *foodUsecase) FindAllFood() ([]models.Food, error) <span class="cov8" title="1">{
+        foods, err := u.foodRepo.FindAll()
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return foods, nil</span>
+}
+
+func (u *foodUsecase) FindFoodById(id string) (*models.Food, error) <span class="cov8" title="1">{
+        food, err := u.foodRepo.FindById(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, constant.ErrRecordNotFound
+        }</span>
+
+        <span class="cov8" title="1">return food, nil</span>
+}
+
+func (u *foodUsecase) UpdateFood(id string, foodDto request.FoodUpdate) error <span class="cov0" title="0">{
+
+        var err error
+
+        _, err = u.FindFoodById(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">description, err := helper.GenerateDescription(foodDto.Name)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">foodUc := models.Food{
+                Name:        foodDto.Name,
+                Description: description,
+                Price:       foodDto.Price,
+                Stock:       foodDto.Stock,
+                Location:    foodDto.Location,
+                UpdatedAt:   time.Now(),
+        }
+
+        return u.foodRepo.Update(id, foodUc)</span>
+}
+
+func (u *foodUsecase) DeleteFood(id string) error <span class="cov8" title="1">{
+        var err error
+
+        _, err = u.FindFoodById(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">err = u.foodRepo.Delete(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package usecase
+
+import (
+        "errors"
+        "miniproject/internal/dto/request"
+        rMidtrans "miniproject/internal/midtrans"
+        "miniproject/internal/models"
+        "miniproject/internal/repository"
+        "time"
+
+        "github.com/google/uuid"
+        "github.com/midtrans/midtrans-go"
+)
+
+type OrderUsecase interface {
+        CreateOrder(orderDTO request.CreateOrderRequest) (map[string]interface{}, error)
+        FindAllUserOrder(userId string) ([]models.Order, error)
+        FindOrderById(orderId string) (*models.Order, error)
+}
+
+type orderUsecase struct {
+        orderRepository          repository.OrderRepository
+        paymentGatewayRepository rMidtrans.PaymentGateway
+        orderItemRepository      repository.OrderItemRepository
+        userRepository           repository.UserRepository
+        foodRepository           repository.FoodRepository
+        paymentRepository        repository.PaymentRepository
+}
+
+func (ou orderUsecase) CreateOrder(orderDTO request.CreateOrderRequest) (map[string]interface{}, error) <span class="cov0" title="0">{
+        ou.paymentGatewayRepository.InitializeClientMidtrans()
+
+        var err error
+        var customer *models.User
+
+        customer, err = ou.userRepository.FindById(orderDTO.UserID)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">foods := []models.Food{}
+        var totalPayments float64
+
+        for i := range orderDTO.OrderItems </span><span class="cov0" title="0">{
+                food, err := ou.foodRepository.FindById(orderDTO.OrderItems[i].FoodID)
+
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span> else<span class="cov0" title="0"> if food.Stock &lt; orderDTO.OrderItems[i].Quantity </span><span class="cov0" title="0">{
+                        return nil, errors.New("food not available")
+                }</span>
+
+                <span class="cov0" title="0">food.Stock -= orderDTO.OrderItems[i].Quantity
+                food.UpdatedAt = time.Now()
+
+                if err := ou.foodRepository.Update(food.ID, *food); err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+
+                <span class="cov0" title="0">totalPayments += (food.Price * float64(orderDTO.OrderItems[i].Quantity))
+                foods = append(foods, *food)</span>
+        }
+
+        <span class="cov0" title="0">paymentId := uuid.NewString()
+        payment := models.Payment{
+                ID:            paymentId,
+                PaymentStatus: "pending",
+                PaymentType:   orderDTO.PaymentType,
+                CreatedAt:     time.Now(),
+                UpdatedAt:     time.Now(),
+        }
+
+        if err := ou.paymentRepository.Create(payment); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">orderId := uuid.NewString()
+        order := models.Order{
+                ID:          orderId,
+                UserID:      orderDTO.UserID,
+                PaymentID:   paymentId,
+                TotalAmount: totalPayments,
+                CreatedAt:   time.Now(),
+                UpdatedAt:   time.Now(),
+        }
+
+        if err := ou.orderRepository.Create(order); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">foodPurchased := []models.OrderItem{}
+        for i := range foods </span><span class="cov0" title="0">{
+                food := models.OrderItem{
+                        ID:       uuid.NewString(),
+                        OrderID:  orderId,
+                        FoodID:   foods[i].ID,
+                        Quantity: orderDTO.OrderItems[i].Quantity,
+                }
+
+                foodPurchased = append(foodPurchased, food)
+        }</span>
+
+        <span class="cov0" title="0">if err := ou.orderItemRepository.Create(foodPurchased); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">items := []midtrans.ItemDetails{}
+        for i := range foods </span><span class="cov0" title="0">{
+                item := midtrans.ItemDetails{
+                        ID:    foods[i].ID,
+                        Name:  foods[i].Name,
+                        Price: int64(foods[i].Price),
+                        Qty:   int32(orderDTO.OrderItems[i].Quantity),
+                }
+
+                items = append(items, item)
+        }</span>
+
+        <span class="cov0" title="0">snapReq := request.PaymentGateway{
+                Email:    customer.Email,
+                Phone:    customer.Phone,
+                OrderId:  orderId,
+                GrossAmt: int64(totalPayments),
+                Items:    items,
+        }
+
+        snapUrl := ou.paymentGatewayRepository.CreateUrlTransactionWithGateway(snapReq)
+
+        payment.PaymentLink = snapUrl
+        if err := ou.paymentRepository.Update(paymentId, payment); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">data := map[string]interface{}{
+                "order_id":       order.ID,
+                "total_payments": totalPayments,
+                "payments": map[string]interface{}{
+                        "id":             payment.ID,
+                        "payment_status": payment.PaymentStatus,
+                        "payment_type":   payment.PaymentType,
+                        "created_at":     payment.CreatedAt,
+                        "updated_at":     payment.UpdatedAt,
+                },
+                "payment_link": snapUrl,
+        }
+
+        return data, nil</span>
+}
+
+func (ou orderUsecase) FindAllUserOrder(userId string) ([]models.Order, error) <span class="cov8" title="1">{
+        _, err := ou.userRepository.FindById(userId)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">order, err := ou.orderRepository.FindAll(userId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return *order, nil</span>
+}
+
+func (ou orderUsecase) FindOrderById(orderId string) (*models.Order, error) <span class="cov8" title="1">{
+        order, err := ou.orderRepository.FindById(orderId)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">itemDetails, err := ou.orderItemRepository.FindByIdOrder(orderId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">payment, err := ou.paymentRepository.FindById(order.PaymentID)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return &amp;models.Order{
+                ID:          order.ID,
+                UserID:      order.UserID,
+                TotalAmount: order.TotalAmount,
+                Payment:     payment,
+                OrderItems:  *itemDetails,
+                CreatedAt:   order.CreatedAt,
+                UpdatedAt:   order.UpdatedAt,
+        }, nil</span>
+
+}
+
+func NewOrderUsecase(
+        orderRepo repository.OrderRepository,
+        orderItemRepo repository.OrderItemRepository,
+        userRepo repository.UserRepository,
+        foodRepo repository.FoodRepository,
+        paymentRepo repository.PaymentRepository,
+) orderUsecase <span class="cov8" title="1">{
+        return orderUsecase{
+                orderRepository:     orderRepo,
+                orderItemRepository: orderItemRepo,
+                userRepository:      userRepo,
+                foodRepository:      foodRepo,
+                paymentRepository:   paymentRepo,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package usecase
+
+import (
+        "miniproject/configs"
+        "miniproject/internal/models"
+        "miniproject/internal/repository"
+        "time"
+
+        "github.com/midtrans/midtrans-go"
+        "github.com/midtrans/midtrans-go/coreapi"
+)
+
+var c coreapi.Client
+
+type PaymentGatewayUsecase interface {
+        MidtransNotification(orderId string) error
+}
+
+type paymentGatewayUsecase struct {
+        orderRepository   repository.OrderRepository
+        paymentRepository repository.PaymentRepository
+}
+
+func (u paymentGatewayUsecase) InitializeCoreapiClient() <span class="cov0" title="0">{
+        c.New(configs.Cfg.MidtransServerKeyDev, midtrans.Sandbox)
+}</span>
+
+func (u paymentGatewayUsecase) MidtransNotification(orderId string) error <span class="cov0" title="0">{
+        u.InitializeCoreapiClient()
+
+        transactionStatusRes, midtransError := c.CheckTransaction(orderId)
+
+        if midtransError != nil </span><span class="cov0" title="0">{
+                return midtransError
+        }</span>
+
+        <span class="cov0" title="0">order, err := u.orderRepository.FindById(orderId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">var payment *models.Payment
+        payment, err = u.paymentRepository.FindById(order.PaymentID)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">if transactionStatusRes.TransactionStatus == "settlement" &amp;&amp; transactionStatusRes.FraudStatus == "accept" </span><span class="cov0" title="0">{
+                payment.PaymentStatus = "settlement"
+                payment.PaymentType = transactionStatusRes.PaymentType
+                payment.UpdatedAt = time.Now()
+
+                if err := u.paymentRepository.Update(payment.ID, *payment); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+        } else<span class="cov0" title="0"> if transactionStatusRes.TransactionStatus == "deny" </span><span class="cov0" title="0">{
+                payment.PaymentStatus = "deny"
+                payment.PaymentType = transactionStatusRes.PaymentType
+                payment.UpdatedAt = time.Now()
+
+                if err := u.paymentRepository.Update(payment.ID, *payment); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+        } else<span class="cov0" title="0"> if transactionStatusRes.TransactionStatus == "cancel" || transactionStatusRes.TransactionStatus == "expired" </span><span class="cov0" title="0">{
+                payment.PaymentStatus = transactionStatusRes.TransactionStatus
+                payment.PaymentType = transactionStatusRes.PaymentType
+                payment.UpdatedAt = time.Now()
+
+                if err := u.paymentRepository.Update(payment.ID, *payment); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+        } else<span class="cov0" title="0"> if transactionStatusRes.TransactionStatus == "pending" </span><span class="cov0" title="0">{
+                payment.PaymentType = transactionStatusRes.PaymentType
+                payment.UpdatedAt = time.Now()
+
+                if err := u.paymentRepository.Update(payment.ID, *payment); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func NewPaymentGatewayUsecase(
+        orderRepo repository.OrderRepository,
+        paymentRepo repository.PaymentRepository,
+) paymentGatewayUsecase <span class="cov0" title="0">{
+        return paymentGatewayUsecase{
+                orderRepository:   orderRepo,
+                paymentRepository: paymentRepo,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package usecase
+
+import (
+        "miniproject/constant"
+        "miniproject/helper"
+        "miniproject/internal/dto/request"
+        "miniproject/internal/models"
+        "miniproject/internal/repository"
+        "time"
+
+        "github.com/google/uuid"
+)
+
+type UserUsecase interface {
+        RegisterUser(userDTO request.UserRequest) error
+        LoginUser(email string, password string) (string, error)
+        FindUserById(userId string) (*models.User, error)
+        UpdateUser(id string, userDTO request.UserUpdate) error
+        DeleteUser(userId string) error
+}
+
+type userUsecase struct {
+        userRepository repository.UserRepository
+}
+
+func NewUserUsecase(
+        userRepo repository.UserRepository,
+
+) userUsecase <span class="cov8" title="1">{
+        return userUsecase{
+                userRepository: userRepo,
+        }
+}</span>
+
+func (u userUsecase) RegisterUser(userDTO request.UserRequest) error <span class="cov8" title="1">{
+        user, _ := u.userRepository.FindByEmail(userDTO.Email)
+
+        if user != nil </span><span class="cov8" title="1">{
+                return constant.ErrDataAlreadyExist
+        }</span>
+
+        <span class="cov8" title="1">hashedPassword, _ := helper.HashPassword(userDTO.Password)
+
+        userUC := models.User{
+                ID:        uuid.NewString(),
+                Name:      userDTO.Name,
+                Phone:     userDTO.Phone,
+                Address:   userDTO.Address,
+                Role:      userDTO.Role,
+                Email:     userDTO.Email,
+                Password:  hashedPassword,
+                CreatedAt: time.Now(),
+                UpdatedAt: time.Now(),
+        }
+
+        err := u.userRepository.Create(userUC)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (u userUsecase) LoginUser(email string, password string) (string, error) <span class="cov8" title="1">{
+
+        user, err := u.userRepository.FindByEmail(email)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+
+        <span class="cov8" title="1">ok := helper.ComparePassword(user.Password, password)
+
+        if !ok </span><span class="cov8" title="1">{
+                return "", constant.ErrRecordNotFound
+        }</span>
+
+        <span class="cov8" title="1">token, _ := helper.CreateToken(user.ID, user.Role)
+
+        return token, nil</span>
+}
+
+func (u userUsecase) FindUserById(userId string) (*models.User, error) <span class="cov8" title="1">{
+        user, err := u.userRepository.FindById(userId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, constant.ErrRecordNotFound
+        }</span>
+
+        <span class="cov8" title="1">return user, nil</span>
+}
+
+func (u userUsecase) UpdateUser(id string, userDTO request.UserUpdate) error <span class="cov8" title="1">{
+        var err error
+
+        _, err = u.FindUserById(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">userUC := models.User{
+                Name:      userDTO.Name,
+                Phone:     userDTO.Phone,
+                Address:   userDTO.Address,
+                Role:      userDTO.Role,
+                UpdatedAt: time.Now(),
+        }
+
+        err = u.userRepository.Update(id, userUC)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+
+}
+func (u userUsecase) DeleteUser(userId string) error <span class="cov8" title="1">{
+        var err error
+
+        _, err = u.FindUserById(userId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">err = u.userRepository.Delete(userId)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">package main
+
+import (
+        "miniproject/configs"
+        "miniproject/databases"
+        "miniproject/helper"
+        "miniproject/internal/routes"
+
+        "github.com/go-playground/validator"
+        "github.com/labstack/echo/v4"
+)
+
+func main() <span class="cov0" title="0">{
+        configs.InitConfig()
+
+        databases.InitMysqlDatabase()
+
+        e := echo.New()
+        e.Validator = &amp;helper.CustomValidator{Validator: validator.New()}
+
+        routes.New(databases.DB, e)
+
+        e.Logger.Fatal(e.Start(configs.Cfg.AppPort))
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
