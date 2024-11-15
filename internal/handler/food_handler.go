@@ -20,6 +20,17 @@ func NewFoodController(foodUseCase usecase.FoodUsecase) *FoodController {
 	return &FoodController{foodUseCase: foodUseCase}
 }
 
+// @Summary Create a new food item
+// @Description Create a new food entry with the provided details
+// @Tags foods
+// @Accept json
+// @Produce json
+// @Param foodDto body request.FoodRequest true "Food details"
+// @Success 201 {object} response.BaseResponse[any] "Food created successfully"
+// @Failure 400 {object} response.BaseResponse[any] "Invalid input data"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /foods [post]
 func (fc *FoodController) CreateFoodHandler(c echo.Context) error {
 	foodDto := &request.FoodRequest{}
 
@@ -51,6 +62,14 @@ func (fc *FoodController) CreateFoodHandler(c echo.Context) error {
 	})
 }
 
+// @Summary Get all food items
+// @Description Retrieve all available food items from the system
+// @Tags foods
+// @Produce json
+// @Success 200 {object} response.BaseResponse[[]models.Food] "List of food items"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /foods [get]
 func (fc *FoodController) GetAllHandler(c echo.Context) error {
 	foods, err := fc.foodUseCase.FindAllFood()
 
@@ -67,6 +86,16 @@ func (fc *FoodController) GetAllHandler(c echo.Context) error {
 	})
 }
 
+// @Summary Get a food item by ID
+// @Description Retrieve a specific food item by its ID
+// @Tags foods
+// @Produce json
+// @Param id path string true "Food ID"
+// @Success 200 {object} response.BaseResponse[models.Food] "Food item found"
+// @Failure 404 {object} response.BaseResponse[any] "Food item not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /foods/{id} [get]
 func (fc *FoodController) GetFoodByIdHandler(c echo.Context) error {
 	id := c.Param("id")
 
@@ -86,6 +115,19 @@ func (fc *FoodController) GetFoodByIdHandler(c echo.Context) error {
 	})
 }
 
+// @Summary Update an existing food item
+// @Description Update a specific food item with new details
+// @Tags foods
+// @Accept json
+// @Produce json
+// @Param id path string true "Food ID"
+// @Param foodDto body request.FoodUpdate true "Updated food details"
+// @Success 200 {object} response.BaseResponse[any] "Food updated successfully"
+// @Failure 400 {object} response.BaseResponse[any] "Invalid input data"
+// @Failure 404 {object} response.BaseResponse[any] "Food item not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /foods/{id} [put]
 func (fc *FoodController) UpdateFoodHandler(c echo.Context) error {
 	id := c.Param("id")
 
@@ -126,6 +168,16 @@ func (fc *FoodController) UpdateFoodHandler(c echo.Context) error {
 	})
 }
 
+// @Summary Delete a food item
+// @Description Delete a specific food item by its ID
+// @Tags foods
+// @Produce json
+// @Param id path string true "Food ID"
+// @Success 200 {object} response.BaseResponse[any] "Food deleted successfully"
+// @Failure 404 {object} response.BaseResponse[any] "Food item not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /foods/{id} [delete]
 func (fc FoodController) DeleteFoodHandler(c echo.Context) error {
 	foodId := c.Param("id")
 

@@ -20,6 +20,17 @@ func NewOrderController(orderUsecase usecase.OrderUsecase) *OrderController {
 	return &OrderController{orderUsecase}
 }
 
+// @Summary Create a new order
+// @Description Create a new order with the provided details
+// @Tags orders
+// @Accept json
+// @Produce json
+// @Param orderDto body request.CreateOrderRequest true "Order details"
+// @Success 201 {object} response.BaseResponse[any] "Order created successfully"
+// @Failure 400 {object} response.BaseResponse[any] "Invalid input data"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /orders [post]
 func (h *OrderController) CreateNewOrderHandler(c echo.Context) error {
 	orderDTO := request.CreateOrderRequest{}
 
@@ -60,6 +71,16 @@ func (h *OrderController) CreateNewOrderHandler(c echo.Context) error {
 	})
 }
 
+// @Summary Get all orders by user ID
+// @Description Retrieve all orders for a specific user
+// @Tags orders
+// @Produce json
+// @Param user_id path string true "User ID"
+// @Success 200 {object} response.BaseResponse[[]models.Order] "List of orders"
+// @Failure 404 {object} response.BaseResponse[any] "User not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /orders/users/{user_id} [get]
 func (h *OrderController) GetAllUserOrder(c echo.Context) error {
 	userId := c.Param("user_id")
 
@@ -86,6 +107,16 @@ func (h *OrderController) GetAllUserOrder(c echo.Context) error {
 	})
 }
 
+// @Summary Get a specific order by ID
+// @Description Retrieve a specific order by its ID
+// @Tags orders
+// @Produce json
+// @Param id path string true "Order ID"
+// @Success 200 {object} response.BaseResponse[models.Order] "Order found"
+// @Failure 404 {object} response.BaseResponse[any] "Order not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /orders/{id} [get]
 func (h *OrderController) GetOrderById(c echo.Context) error {
 	orderId := c.Param("id")
 

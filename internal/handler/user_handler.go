@@ -20,6 +20,17 @@ func NewUserController(userUsecase usecase.UserUsecase) *UserController {
 	return &UserController{userUsecase: userUsecase}
 }
 
+// @Summary Register a new user
+// @Description Register a new user with the provided details
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param userDto body request.UserRequest true "User registration details"
+// @Success 201 {object} response.BaseResponse[any] "User registered successfully"
+// @Failure 400 {object} response.BaseResponse[any] "Invalid input data"
+// @Failure 409 {object} response.BaseResponse[any] "Email already exists"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Router /users/register [post]
 func (uc *UserController) HandlerRegister(c echo.Context) error {
 	userDTO := request.UserRequest{}
 
@@ -66,11 +77,21 @@ func (uc *UserController) HandlerRegister(c echo.Context) error {
 
 }
 
+// @Summary User login
+// @Description User login with email and password
+// @Tags user
+// @Accept json
+// @Produce json
+//
+//	@Param login body request.LoginRequest true "Login Credentials"
+//
+// @Success 200 {object} response.BaseResponse[map[string]string] "Login successful, token returned"
+// @Failure 400 {object} response.BaseResponse[any] "Invalid input data"
+// @Failure 409 {object} response.BaseResponse[any] "Wrong email or password"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Router /users/login [post]
 func (uc *UserController) HandlerLogin(c echo.Context) error {
-	loginDTO := struct {
-		Email    string `json:"email" form:"email"`
-		Password string `json:"password" form:"password"`
-	}{}
+	loginDTO := request.LoginRequest{}
 
 	if err := c.Bind(&loginDTO); err != nil {
 		return c.JSON(http.StatusBadRequest, response.BaseResponse[any]{
@@ -104,6 +125,15 @@ func (uc *UserController) HandlerLogin(c echo.Context) error {
 	})
 }
 
+// @Summary Get user by ID
+// @Description Retrieve a specific user by their ID
+// @Tags user
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} response.BaseResponse[models.User] "User found"
+// @Failure 404 {object} response.BaseResponse[any] "User not found"
+// @Security BearerAuth
+// @Router /users/{id} [get]
 func (uc UserController) GetUserByIdHandler(c echo.Context) error {
 	id := c.Param("id")
 
@@ -123,6 +153,19 @@ func (uc UserController) GetUserByIdHandler(c echo.Context) error {
 	})
 }
 
+// @Summary Update user information
+// @Description Update user information by their ID
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Param userDto body request.UserUpdate true "User update details"
+// @Success 200 {object} response.BaseResponse[any] "User updated successfully"
+// @Failure 400 {object} response.BaseResponse[any] "Invalid input data"
+// @Failure 404 {object} response.BaseResponse[any] "User not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /users/{id} [put]
 func (uc UserController) UpdateUserHandler(c echo.Context) error {
 	userId := c.Param("id")
 	userDto := request.UserUpdate{}
@@ -170,6 +213,16 @@ func (uc UserController) UpdateUserHandler(c echo.Context) error {
 	})
 }
 
+// @Summary Delete user
+// @Description Delete a user by their ID
+// @Tags user
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} response.BaseResponse[any] "User deleted successfully"
+// @Failure 404 {object} response.BaseResponse[any] "User not found"
+// @Failure 500 {object} response.BaseResponse[any] "Internal server error"
+// @Security BearerAuth
+// @Router /users/{id} [delete]
 func (uc UserController) DeleteUserHandler(c echo.Context) error {
 	userId := c.Param("id")
 

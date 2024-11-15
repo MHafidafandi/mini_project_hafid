@@ -1,0 +1,735 @@
+basePath: /api/v1
+definitions:
+  map_string_string:
+    additionalProperties:
+      type: string
+    type: object
+  models.Food:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      expiry_date:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.Order:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      order_items:
+        items:
+          $ref: '#/definitions/models.OrderItem'
+        type: array
+      payment:
+        $ref: '#/definitions/models.Payment'
+      payment_id:
+        type: string
+      total_amount:
+        type: number
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: string
+    type: object
+  models.OrderItem:
+    properties:
+      food:
+        $ref: '#/definitions/models.Food'
+      food_id:
+        type: string
+      id:
+        type: string
+      order:
+        $ref: '#/definitions/models.Order'
+      order_id:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  models.Payment:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      orders:
+        $ref: '#/definitions/models.Order'
+      payment_link:
+        type: string
+      payment_status:
+        type: string
+      payment_type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      orders:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+      password:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  request.CreateOrderRequest:
+    properties:
+      order_items:
+        items:
+          $ref: '#/definitions/request.OrderItem'
+        type: array
+      payment_type:
+        type: string
+      total_amount:
+        type: number
+      user_id:
+        type: string
+    required:
+    - user_id
+    type: object
+  request.FoodRequest:
+    properties:
+      expiry_date:
+        type: integer
+      location:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+    required:
+    - expiry_date
+    - location
+    - name
+    - price
+    - stock
+    type: object
+  request.FoodUpdate:
+    properties:
+      location:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+    required:
+    - location
+    - name
+    - price
+    - stock
+    type: object
+  request.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  request.OrderItem:
+    properties:
+      food_id:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - food_id
+    - quantity
+    type: object
+  request.UserRequest:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    required:
+    - address
+    - email
+    - name
+    - password
+    - phone
+    - role
+    type: object
+  request.UserUpdate:
+    properties:
+      address:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    required:
+    - address
+    - name
+    - phone
+    - role
+    type: object
+  response.BaseResponse-any:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  response.BaseResponse-array_models_Food:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Food'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  response.BaseResponse-array_models_Order:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  response.BaseResponse-map_string_string:
+    properties:
+      data:
+        $ref: '#/definitions/map_string_string'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  response.BaseResponse-models_Food:
+    properties:
+      data:
+        $ref: '#/definitions/models.Food'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  response.BaseResponse-models_Order:
+    properties:
+      data:
+        $ref: '#/definitions/models.Order'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  response.BaseResponse-models_User:
+    properties:
+      data:
+        $ref: '#/definitions/models.User'
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+host: greenenvironment
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server Swagger server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Mini Project EcoBite
+  version: "1.0"
+paths:
+  /foods:
+    get:
+      description: Retrieve all available food items from the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of food items
+          schema:
+            $ref: '#/definitions/response.BaseResponse-array_models_Food'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Get all food items
+      tags:
+      - foods
+    post:
+      consumes:
+      - application/json
+      description: Create a new food entry with the provided details
+      parameters:
+      - description: Food details
+        in: body
+        name: foodDto
+        required: true
+        schema:
+          $ref: '#/definitions/request.FoodRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Food created successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Create a new food item
+      tags:
+      - foods
+  /foods/{id}:
+    delete:
+      description: Delete a specific food item by its ID
+      parameters:
+      - description: Food ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Food deleted successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "404":
+          description: Food item not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Delete a food item
+      tags:
+      - foods
+    get:
+      description: Retrieve a specific food item by its ID
+      parameters:
+      - description: Food ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Food item found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-models_Food'
+        "404":
+          description: Food item not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Get a food item by ID
+      tags:
+      - foods
+    put:
+      consumes:
+      - application/json
+      description: Update a specific food item with new details
+      parameters:
+      - description: Food ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated food details
+        in: body
+        name: foodDto
+        required: true
+        schema:
+          $ref: '#/definitions/request.FoodUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Food updated successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "404":
+          description: Food item not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Update an existing food item
+      tags:
+      - foods
+  /orders:
+    post:
+      consumes:
+      - application/json
+      description: Create a new order with the provided details
+      parameters:
+      - description: Order details
+        in: body
+        name: orderDto
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Order created successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Create a new order
+      tags:
+      - orders
+  /orders/{id}:
+    get:
+      description: Retrieve a specific order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-models_Order'
+        "404":
+          description: Order not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Get a specific order by ID
+      tags:
+      - orders
+  /orders/users/{user_id}:
+    get:
+      description: Retrieve all orders for a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of orders
+          schema:
+            $ref: '#/definitions/response.BaseResponse-array_models_Order'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Get all orders by user ID
+      tags:
+      - orders
+  /users/{id}:
+    delete:
+      description: Delete a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Delete user
+      tags:
+      - user
+    get:
+      description: Retrieve a specific user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-models_User'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Get user by ID
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update user information by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User update details
+        in: body
+        name: userDto
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User updated successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      security:
+      - BearerAuth: []
+      summary: Update user information
+      tags:
+      - user
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: User login with email and password
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful, token returned
+          schema:
+            $ref: '#/definitions/response.BaseResponse-map_string_string'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "409":
+          description: Wrong email or password
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      summary: User login
+      tags:
+      - user
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided details
+      parameters:
+      - description: User registration details
+        in: body
+        name: userDto
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "409":
+          description: Email already exists
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      summary: Register a new user
+      tags:
+      - user
+  /webhook/midtrans:
+    post:
+      consumes:
+      - application/json
+      description: Receives payment status updates from Midtrans and updates the transaction
+        status accordingly
+      parameters:
+      - description: Midtrans notification payload
+        in: body
+        name: notificationPayloads
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Transaction status updated successfully
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "404":
+          description: Order not found
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.BaseResponse-any'
+      summary: Handle Midtrans payment notification
+      tags:
+      - webhooks
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
