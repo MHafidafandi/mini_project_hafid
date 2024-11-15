@@ -26,25 +26,6 @@ func TestFindAllFood(t *testing.T) {
 	mockRepo.AssertExpectations(t)
 }
 
-// func TestCreateFood(t *testing.T) {
-// 	configs.InitConfig()
-
-// 	foodDto := request.FoodRequest{
-// 		Name:       "Apple",
-// 		Price:      100,
-// 		Stock:      10,
-// 		ExpiryDate: 7,
-// 		Location:   "Jakarta",
-// 	}
-
-// 	mockRepo.Mock.On("Create", mock.Anything).Return(nil)
-
-// 	err := usecase.CreateFood(foodDto)
-
-// 	assert.Nil(t, err)
-// 	mockRepo.AssertExpectations(t)
-// }
-
 func TestFindFoodById(t *testing.T) {
 	expectedFood := &models.Food{ID: uuid.NewString(), Name: "Apple", Price: 100, Stock: 10}
 	mockRepo.Mock.On("FindById", expectedFood.ID).Return(expectedFood, nil)
@@ -54,25 +35,6 @@ func TestFindFoodById(t *testing.T) {
 	assert.Equal(t, expectedFood, food)
 	mockRepo.AssertExpectations(t)
 }
-
-// func TestUpdateFood(t *testing.T) {
-// 	configs.InitConfig()
-
-// 	foodID := uuid.NewString()
-// 	foodDto := request.FoodUpdate{
-// 		Name:     "Orange",
-// 		Price:    150,
-// 		Stock:    20,
-// 		Location: "Bandung",
-// 	}
-
-// 	mockRepo.Mock.On("FindById", foodID).Return(&models.Food{ID: foodID}, nil)
-// 	mockRepo.Mock.On("Update", foodID, mock.Anything).Return(nil)
-
-// 	err := usecase.UpdateFood(foodID, foodDto)
-// 	assert.NoError(t, err)
-// 	mockRepo.AssertExpectations(t)
-// }
 
 func TestDeleteFood(t *testing.T) {
 

@@ -14,8 +14,8 @@ import (
 
 type OrderUsecase interface {
 	CreateOrder(orderDTO request.CreateOrderRequest) (map[string]interface{}, error)
-	FindAllUserOrder(userId string) ([]models.Order, error)
-	FindOrderById(orderId string) (*models.Order, error)
+	FindAllUserOrder(userId string) ([]map[string]interface{}, error)
+	FindOrderById(orderId string) (map[string]interface{}, error)
 }
 
 type orderUsecase struct {
@@ -148,7 +148,7 @@ func (ou orderUsecase) CreateOrder(orderDTO request.CreateOrderRequest) (map[str
 	return data, nil
 }
 
-func (ou orderUsecase) FindAllUserOrder(userId string) ([]models.Order, error) {
+func (ou orderUsecase) FindAllUserOrder(userId string) ([]map[string]interface{}, error) {
 	_, err := ou.userRepository.FindById(userId)
 	if err != nil {
 		return nil, err
@@ -160,10 +160,29 @@ func (ou orderUsecase) FindAllUserOrder(userId string) ([]models.Order, error) {
 		return nil, err
 	}
 
-	return *order, nil
+	orderItemsMap := make([]map[string]interface{}, len(*order))
+
+	for i, item := range *order {
+		orderItem := map[string]interface{}{
+			"id":           item.ID,
+			"user_id":      item.UserID,
+			"total_amount": item.TotalAmount,
+			"payment_id":   item.PaymentID,
+			"payment": map[string]interface{}{
+				"payment_status": item.Payment.PaymentStatus,
+				"payment_type":   item.Payment.PaymentType,
+				"payment_link":   item.Payment.PaymentLink,
+			},
+			"created_at": item.CreatedAt,
+			"updated_at": item.UpdatedAt,
+		}
+		orderItemsMap[i] = orderItem
+	}
+
+	return orderItemsMap, nil
 }
 
-func (ou orderUsecase) FindOrderById(orderId string) (*models.Order, error) {
+func (ou orderUsecase) FindOrderById(orderId string) (map[string]interface{}, error) {
 	order, err := ou.orderRepository.FindById(orderId)
 	if err != nil {
 		return nil, err
@@ -180,16 +199,37 @@ func (ou orderUsecase) FindOrderById(orderId string) (*models.Order, error) {
 		return nil, err
 	}
 
-	return &models.Order{
-		ID:          order.ID,
-		UserID:      order.UserID,
-		TotalAmount: order.TotalAmount,
-		Payment:     payment,
-		OrderItems:  *itemDetails,
-		CreatedAt:   order.CreatedAt,
-		UpdatedAt:   order.UpdatedAt,
-	}, nil
+	orderItemsMap := make([]map[string]interface{}, len(*itemDetails))
 
+	for i, item := range *itemDetails {
+		orderItem := map[string]interface{}{
+			"food_id":     item.FoodID,
+			"quantity":    item.Quantity,
+			"food_name":   item.Food.Name,
+			"expiry_data": item.Food.ExpiryDate,
+			"price":       item.Food.Price,
+		}
+		orderItemsMap[i] = orderItem
+	}
+
+	data := map[string]interface{}{
+		"order_id":       order.ID,
+		"user_id":        order.UserID,
+		"total_payments": order.TotalAmount,
+		"payments": map[string]interface{}{
+			"id":             payment.ID,
+			"payment_status": payment.PaymentStatus,
+			"payment_type":   payment.PaymentType,
+			"payment_link":   payment.PaymentLink,
+			"created_at":     payment.CreatedAt,
+			"updated_at":     payment.UpdatedAt,
+		},
+		"order_items": orderItemsMap,
+		"created_at":  order.CreatedAt,
+		"updated_at":  order.UpdatedAt,
+	}
+
+	return data, nil
 }
 
 func NewOrderUsecase(
