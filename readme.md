@@ -11,7 +11,7 @@ Berikut adalah ERD untuk aplikasi EcoBite:
 
 ## 2. High-Level Architecture (HLA)
 
-![HLA Diagram](path_to_hla_image.png)
+![HLA Diagram](./assets/hla_ecobite.png)
 
 Komponen utama dari arsitektur aplikasi ini meliputi:
 
